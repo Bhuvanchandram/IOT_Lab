@@ -1,20 +1,21 @@
-import time
 import RPi.GPIO as GPIO
+import time
 
-touch_pin = 17
+# Define the GPIO pin that the touch sensor is connected to.
+touch_sensor_pin = 26
 
+# Initialize the GPIO library.
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(touch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(touch_sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-def touch_det(pin):
-    touch=GPIO.input(pin)
-    return touch
+# The main loop that continuously checks for taps on the touch sensor.
+while True:
+    # Read the current state of the touch sensor.
+    touch_sensor_state = GPIO.input(touch_sensor_pin)
 
-try:
-    while True:
-        if touch_det(touch_pin): print('['+time.ctime()+'] - '+'Touch Detected')
-        time.sleep(0.2)
-    
-except KeyboardInterrupt:
-  print('interrupted!')
-  GPIO.cleanup()
+    # If the touch sensor is pressed, print a message.
+    if touch_sensor_state == GPIO.LOW:
+        print("Touch detected!")
+
+    # Wait for a short period of time before checking the touch sensor again.
+    time.sleep(0.5)
