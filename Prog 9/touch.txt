@@ -1,0 +1,13 @@
+import os
+from PiicoDev_CAP1203 import PiicoDev_CAP1203
+from PiicoDev_Unified import sleep_ms # cross-platform-compatible sleep
+
+touchSensor = PiicoDev_CAP1203()
+
+while True:
+    status = touchSensor.read()
+    
+    if status[1] == 1: # Check for touch on pad 1
+        os.system("ls -l") # Execute an OS command: list files in working directory
+
+    sleep_ms(100)
