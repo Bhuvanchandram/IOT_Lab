@@ -1,13 +1,20 @@
-import os
-from PiicoDev_CAP1203 import PiicoDev_CAP1203
-from PiicoDev_Unified import sleep_ms # cross-platform-compatible sleep
+import time
+import RPi.GPIO as GPIO
 
-touchSensor = PiicoDev_CAP1203()
+touch_pin = 17
 
-while True:
-    status = touchSensor.read()
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(touch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+def touch_det(pin):
+    touch=GPIO.input(pin)
+    return touch
+
+try:
+    while True:
+        if touch_det(touch_pin): print('['+time.ctime()+'] - '+'Touch Detected')
+        time.sleep(0.2)
     
-    if status[1] == 1: # Check for touch on pad 1
-        os.system("ls -l") # Execute an OS command: list files in working directory
-
-    sleep_ms(100)
+except KeyboardInterrupt:
+  print('interrupted!')
+  GPIO.cleanup()
