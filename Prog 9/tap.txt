@@ -1,0 +1,30 @@
+import RPi.GPIO as GPIO
+import time
+
+# Set the GPIO mode
+GPIO.setmode(GPIO.BOARD)
+
+# Define the GPIO pin connected to the tap sensor
+tap_sensor_pin = 12
+
+# Set the GPIO pin as input
+GPIO.setup(tap_sensor_pin, GPIO.IN)
+
+# Define a callback function to handle tap sensor events
+def tap_sensor_callback(channel):
+    if GPIO.input(tap_sensor_pin):
+        print("Tap sensor is tapped!")
+    else:
+        print("Tap sensor is released.")
+
+# Add event detection to the tap sensor GPIO pin
+GPIO.add_event_detect(tap_sensor_pin, GPIO.BOTH, callback=tap_sensor_callback)
+
+try:
+    # Run an infinite loop to keep the program running
+    while True:
+        time.sleep(1)
+
+except KeyboardInterrupt:
+    # Clean up the GPIO settings on program exit
+    GPIO.cleanup()
